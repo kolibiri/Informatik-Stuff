@@ -80,26 +80,49 @@ class Auto_Ampel(object):
 
     def update(self):
         if(self.status=="rotgelb"):
+            try:
+                self.reset()
+
+            except Exception:
+                pass
+
+            self.red = self.blackcanvas1.create_oval(1, 1, 50, 50, fill="red")
             self.yellow = self.blackcanvas2.create_oval(1, 1, 50, 50, fill="yellow")
 
         elif(self.status=="gruen"):
-            self.blackcanvas1.delete(self.red)
-            self.blackcanvas2.delete(self.yellow)
+            try:
+                self.reset()
+
+            except Exception:
+                pass
+
             self.green = self.blackcanvas3.create_oval(1, 1, 50, 50, fill="green")
 
         elif(self.status=="gelb"):
-            self.blackcanvas3.delete(self.green)
+            try:
+              self.blackcanvas3.delete(self.green)
+
+            except Exception:
+                pass
+
             self.yellow = self.blackcanvas2.create_oval(1, 1, 50, 50, fill="yellow")
             self.exc=1
 
         elif(self.status=="rot"):
-            if(self.exc==1):
-                self.blackcanvas2.delete(self.yellow)
+            try:
+                self.reset()
+
+            except Exception:
+                pass
 
             self.red = self.blackcanvas1.create_oval(1, 1, 50, 50, fill="red")
 
         elif(self.status == "aus"):
-            self.blackcanvas1.delete(self.red)
+            try:
+                self.reset()
+
+            except Exception:
+                pass
 
 
 
@@ -119,46 +142,83 @@ class Auto_Ampel(object):
         pass
 
 
-    def initialize(self, x, y):
-        self.initialize_normal()
+    def initialize(self, x, y, status):
+        if(status=="rot"):
+            self.set_Lampen(True, False, False)
+            self.status = status
+
+        elif(status=="gruen"):
+            self.set_Lampen(False, False, True)
+            self.status = status
+
+        elif(status=="gelb"):
+            self.set_Lampen(False, True, False)
+            self.status = status
+
+        elif(status=="rotgelb"):
+            self.set_Lampen(True, True, False)
+            self.status = status
+
+        self.update()
         self.set_location(x, y)
-        add_to_global_index()
+
+        def reset(self):
+            try:
+              self.blackcanvas1.delete(self.red)
+              self.blackcanvas2.delete(self.yellow)
+              self.blackcanvas3.delete(self.green)
+
+            except Exception:
+                pass
+
 
 
 
 
 def alle_schalten():
-    pass
+    x = 0
+    while(x < len(object_array)):
+        object_array[x].schalten()
+        x += 1
 
-def add_to_global_index():
-    pass
+
+
+def add_to_object_array(obj):
+    object_array.append(obj)
+
+
 
 
 main = Tk()
 main.title("Ampelschaltung")
 main.geometry("480x360")
+main.iconbitmap("Ampelicon.ico")
 
-"""greencanvas = Canvas(main, width=50, height=50, bg="black")
-green = greencanvas.create_oval(1, 1, 50, 50, fill="green")
-greencanvas.grid(row=0, column=0)
-yellowcanvas = Canvas(main, width=50, height=50, bg="black")
-yellow = yellowcanvas.create_oval(1, 1, 50, 50, fill="yellow")
-yellowcanvas.grid(row=1, column=0)
-redcanvas = Canvas(main, width=50, height=50, bg="black")
-red = redcanvas.create_oval(1, 1, 50, 50, fill="red")
-redcanvas.grid(row=2, column=0) """
-
+object_array = []
 
 testbutton = Button(main, text="Testmodus", command= lambda: Ampel1.testmodus())
 testbutton.grid(row=0, column=1)
-debugbutton = Button(main, text="Schalten", command=lambda: Ampel1.schalten())
+debugbutton = Button(main, text="Schalten", command=lambda: alle_schalten())
 debugbutton.grid(row=0, column=2)
 
 Ampel1 = Auto_Ampel()
-Ampel1.initialize(0, 0)
+Ampel1.initialize(0, 0, "rot")
+add_to_object_array(Ampel1)
 
 Ampel2 = Auto_Ampel()
-Ampel2.initialize(1, 0)
+Ampel2.initialize(1, 0, "gruen")
+add_to_object_array(Ampel2)
+
+Ampel3 = Auto_Ampel()
+Ampel3.initialize(0, 3, "rotgelb")
+add_to_object_array(Ampel3)
+
+Ampel4 = Auto_Ampel()
+Ampel4.initialize(1, 3, "gelb")
+add_to_object_array(Ampel4)
+
+
+
 
 
 
