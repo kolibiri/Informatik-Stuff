@@ -224,16 +224,87 @@ def add_to_object_array(obj, dest):
 
 
 def auto():
-    alle_schalten()
+    sleep(5)
+    for o in object_array:
+        if(o.status == "gruen"):
+            o.schalten()
+
+    sleep(0.5)
+    for o in object_array:
+        if(o.status == "gelb"):
+            o.schalten()
+
+    for f in fuß_array:
+        if(f.status == "gruen"):
+            f.schalten()
+
+    sleep(3)
+    for o in object_array2:
+        if(o.status=="rot"):
+            o.schalten()
+
     sleep(1)
+    for o in object_array2:
+       if(o.status=="rotgelb"):
+           o.schalten()
+
+    fuß_array[0].schalten()
+    sleep(5)
+
+    for o in object_array2:
+        if(o.status=="gruen"):
+            o.schalten()
+
+    sleep(1)
+    for o in object_array2:
+        if(o.status=="gelb"):
+            o.schalten()
+    sleep(5)
+    for o in object_array:
+        if(o.status=="rot"):
+            o.schalten()
+    sleep(1)
+    fuß_array[0].schalten()
+
+    for o in object_array:
+        if(o.status=="rotgelb"):
+            o.schalten()
+
+
+
+
+
 
 
 def start_auto():
-    """
-    loop = Thread(target=auto())
-    loop.start()
-    """
-    pass
+    Ampel1 = Auto_Ampel()
+    Ampel1.initialize(0, 0, "rot")
+    add_to_object_array(Ampel1, object_array2)
+
+    Ampel2 = Auto_Ampel()
+    Ampel2.initialize(1, 0, "gruen")
+    add_to_object_array(Ampel2, object_array)
+
+    Ampel3 = Auto_Ampel()
+    Ampel3.initialize(0, 3, "rot")
+    add_to_object_array(Ampel3, object_array2)
+
+    Ampel4 = Auto_Ampel()
+    Ampel4.initialize(1, 3, "gruen")
+    add_to_object_array(Ampel4, object_array)
+
+    fuß1 = andere_ampel()
+    fuß1.initialize(0, 4, "rot")
+    add_to_object_array(fuß1, fuß_array)
+
+    fuß2 = andere_ampel()
+    fuß2.initialize(1, 4, "gruen")
+    add_to_object_array(fuß2, fuß_array)
+
+    while(True):
+       auto()
+
+
 
 def stoptest():
     stop = True
@@ -247,6 +318,7 @@ main.geometry("480x360")
 main.iconbitmap("Ampelicon.ico")
 
 object_array = []
+object_array2 = []
 fuß_array = []
 stop = False
 
@@ -254,32 +326,7 @@ debugbutton = Button(main, text="Schalten", command=lambda: alle_schalten(object
 debugbutton.grid(row=0, column=2)
 debug2button = Button(main, text="Fussgänger Schalten", command=lambda: alle_schalten(fuß_array))
 debug2button.grid(row=1, column=2)
-
-Ampel1 = Auto_Ampel()
-Ampel1.initialize(0, 0, "rot")
-add_to_object_array(Ampel1, object_array)
-
-Ampel2 = Auto_Ampel()
-Ampel2.initialize(1, 0, "gruen")
-add_to_object_array(Ampel2, object_array)
-
-Ampel3 = Auto_Ampel()
-Ampel3.initialize(0, 3, "rotgelb")
-add_to_object_array(Ampel3, object_array)
-
-Ampel4 = Auto_Ampel()
-Ampel4.initialize(1, 3, "gelb")
-add_to_object_array(Ampel4, object_array)
-
-fuß1 = andere_ampel()
-fuß1.initialize(0, 4, "rot")
-add_to_object_array(fuß1, fuß_array)
-
-fuß2 = andere_ampel()
-fuß2.initialize(1, 4, "gruen")
-add_to_object_array(fuß2, fuß_array)
-
-
-
+loop = Thread(target=start_auto)
+loop.start()
 
 main.mainloop()
