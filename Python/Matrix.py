@@ -11,6 +11,7 @@ def getcord(l):
     print(l)
 
 
+
 def creatematrix(m, n, z, typ):
     matrix = [[0] * m for i in range(n)]
     if(typ == 1):   #"normal"
@@ -73,10 +74,61 @@ def creatematrix(m, n, z, typ):
         10  14  18  21  23
         15  19  22  24  25
 
+        00 01 02 03 04
+        10 11 12 13 14
+        20 21 22 23 24
+        30 31 32 33 34
+        40 41 42 43 44
+
         """
         x = 1
         y = 0
         c = 0
+        by = 0
+        bc = 0
+        for i in range(m*n):
+            if(c==0):
+                matrix[y][c] = x
+                x += 1
+                c += 1
+
+            if(c==1):
+                bc = c
+                by = y
+                matrix[y][c] = x
+                x += 1
+                y += 1
+                c -= 1
+
+            if(bc == 1):
+                y = 0
+                c = 2
+
+
+
+
+    elif(typ == 6):     #Schlange
+        x = 1
+        y = 0
+        c = 0
+        while(y < m):
+            for j in range(len(matrix[y])):
+                matrix[y][c] = x
+                c += 1
+                x += z
+            y += 1
+            c = n-1
+            if(y == m):
+                pass
+
+            else:
+                for k in range(n):
+                    matrix[y][c] = x
+                    c -= 1
+                    x += z
+
+            c = 0
+            y += 1
 
 
     return(matrix)
@@ -89,3 +141,6 @@ matrix3 = creatematrix(5, 5, 1, 3)
 getmatrix(matrix3)
 matrix4 = creatematrix(5, 5, 1, 4)
 getmatrix(matrix4)
+matrix5 = creatematrix(5, 5, 1, 6)
+getmatrix(matrix5)
+
