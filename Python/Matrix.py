@@ -86,23 +86,45 @@ def creatematrix(m, n, z, typ):
         c = 0
         by = 0
         bc = 0
-        for i in range(m*n):
-            if(c==0):
-                matrix[y][c] = x
-                x += 1
-                c += 1
+        matrix[y][c]=x
+        c += 1
+        x += 1
+        bc = c
+        by = y
+        for j in range(m-1):
+            for i in range(bc+1):
+                matrix[y][c]=x
+                if(c>0):
+                    c -= 1
 
-            if(c==1):
-                bc = c
-                by = y
-                matrix[y][c] = x
-                x += 1
                 y += 1
-                c -= 1
+                x += 1
 
-            if(bc == 1):
-                y = 0
-                c = 2
+            c = bc+1
+            bc += 1
+            y = 0
+
+        y +=1
+        by = 1
+        bc = m-1
+        c = 4
+        for i in range(m-2):
+            for j in range(bc):
+                matrix[y][c]=x
+                x+=1
+                if(y<4):
+                    y+=1
+
+                c-=1
+
+            y = by+1
+            by+=1
+            c=4
+
+        matrix[y][c]=x
+
+
+
 
 
 
@@ -133,6 +155,7 @@ def creatematrix(m, n, z, typ):
 
     return(matrix)
 
+"""
 matrix1 = creatematrix(5, 5, 1, 1)
 getmatrix(matrix1)
 matrix2 = creatematrix(5, 5, 1, 2)
@@ -143,4 +166,7 @@ matrix4 = creatematrix(5, 5, 1, 4)
 getmatrix(matrix4)
 matrix5 = creatematrix(5, 5, 1, 6)
 getmatrix(matrix5)
+"""
+matrix6 = creatematrix(5, 5, 1, 5)
+getmatrix(matrix6)
 
